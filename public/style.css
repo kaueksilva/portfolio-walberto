@@ -251,6 +251,41 @@ h3 { font-size: 18px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
   font-size: 13px; line-height: 1.45; color: var(--texto-suave);
 }
 .hero-foto figcaption strong { color: var(--vermelho-claro); }
+
+/* Hover: a foto vira um gráfico de barras.
+   O script fatia a foto em colunas (.foto-grafico span) que reproduzem a imagem
+   exatamente; no hover cada coluna é recortada do topo (--corte) como uma barra.
+   A barra sob o cursor (.ativa) volta inteira e as demais ficam acinzentadas,
+   como o realce cruzado do Power BI. */
+.foto-grafico {
+  position: absolute; inset: 0; display: flex;
+  border-radius: var(--raio-md); overflow: hidden;
+  background:
+    repeating-linear-gradient(to top, rgba(255, 255, 255, .07) 0 1px, transparent 1px 20%),
+    var(--superficie);
+  opacity: 0;
+  transition: opacity 0s .9s; /* só some depois que as barras voltaram */
+}
+.foto-grafico::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--gradiente);
+}
+.foto-grafico span {
+  flex: 1;
+  /* Mesmo enquadramento da <img> (cover + center 18%), deslocado para cada coluna */
+  background: url('walberto.jpeg') var(--x) 18% / calc(var(--n) * 100%) auto no-repeat;
+  clip-path: inset(0 0 0 0 round 0);
+  transition: clip-path .7s var(--suave), filter .35s ease;
+  transition-delay: calc(var(--i) * 45ms), 0s;
+}
+.foto-grafico.pronto span { transition-duration: .4s, .35s; transition-delay: 0s; }
+
+.hero-foto img { transition: opacity 0s .9s; }
+.hero-foto:hover img { opacity: 0; transition-delay: 0s; }
+.hero-foto:hover .foto-grafico { opacity: 1; transition-delay: 0s; }
+.hero-foto:hover .foto-grafico span { clip-path: inset(var(--corte) 7% 0 7% round 4px 4px 0 0); }
+.hero-foto:hover .foto-grafico span.ativa { clip-path: inset(0 7% 0 7% round 4px 4px 0 0); }
+.hero-foto:hover .foto-grafico:has(.ativa) span:not(.ativa) { filter: grayscale(.85) brightness(.55); }
 .ponto {
   flex-shrink: 0; width: 8px; height: 8px; margin-top: 6px; border-radius: 50%;
   background: var(--vermelho); box-shadow: 0 0 0 4px var(--vermelho-fundo);

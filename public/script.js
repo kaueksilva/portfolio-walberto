@@ -128,3 +128,39 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 atualizarProgresso();
+
+// ---------- Foto do hero vira gráfico de barras no hover ----------
+const fotoHero = document.querySelector('.hero-foto');
+if (fotoHero && !reduzirMovimento) {
+  // Quanto (%) é recortado do topo de cada coluna: define as alturas das barras
+  const CORTES = [38, 16, 52, 8, 30, 46, 12, 58, 24];
+  const grafico = document.createElement('div');
+  grafico.className = 'foto-grafico';
+  grafico.setAttribute('aria-hidden', 'true');
+  grafico.style.setProperty('--n', CORTES.length);
+  CORTES.forEach((corte, i) => {
+    const coluna = document.createElement('span');
+    coluna.style.setProperty('--i', i);
+    coluna.style.setProperty('--corte', `${corte}%`);
+    coluna.style.setProperty('--x', `${(i / (CORTES.length - 1)) * 100}%`);
+    grafico.append(coluna);
+  });
+  fotoHero.querySelector('img').after(grafico);
+
+  const colunas = [...grafico.children];
+  let temporizador;
+  fotoHero.addEventListener('pointerenter', () => {
+    // Depois da cascata de entrada, as barras respondem ao cursor sem atraso
+    temporizador = setTimeout(() => grafico.classList.add('pronto'), 700 + colunas.length * 45);
+  });
+  fotoHero.addEventListener('pointermove', (e) => {
+    const r = grafico.getBoundingClientRect();
+    const ativa = Math.floor(((e.clientX - r.left) / r.width) * colunas.length);
+    colunas.forEach((coluna, i) => coluna.classList.toggle('ativa', i === ativa));
+  });
+  fotoHero.addEventListener('pointerleave', () => {
+    clearTimeout(temporizador);
+    grafico.classList.remove('pronto');
+    colunas.forEach((coluna) => coluna.classList.remove('ativa'));
+  });
+}
