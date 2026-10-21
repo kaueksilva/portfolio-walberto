@@ -8,16 +8,31 @@ Site pessoal de **Walberto Ferreira de Souza**, Analista de Sistemas Sênior com
 
 | Arquivo | Conteúdo |
 | --- | --- |
-| `index.html` | Página única com todas as seções |
-| `style.css` | Visual escuro e animações (vermelho e azul) |
-| `script.js` | Menu, animações e **contatos** |
-| `walberto.jpeg` | Foto de perfil |
+| `server.js` | Servidor Node.js (sem dependências) que entrega o site |
+| `package.json` | Scripts `npm start` e `npm run dev` |
+| `public/index.html` | Página única com todas as seções |
+| `public/style.css` | Visual escuro e animações (vermelho e azul) |
+| `public/script.js` | Menu, animações e **contatos** |
+| `public/walberto.jpeg` | Foto de perfil |
+| `.github/workflows/pages.yml` | Publicação automática no GitHub Pages |
 
-É um site estático: HTML, CSS e JavaScript puros, sem build e sem dependências.
+O servidor usa apenas módulos nativos do Node.js: não há `npm install` nem build.
+
+## Rodar com Node.js
+
+Requer Node.js 18 ou superior.
+
+```bash
+npm start          # http://localhost:3000
+npm run dev        # reinicia sozinho ao salvar o server.js
+PORT=8080 npm start  # outra porta
+```
+
+Rotas úteis: `/` (site) e `/healthz` (verificação de saúde para hospedagens).
 
 ## Editar os contatos
 
-No início do `script.js`. Os campos vazios ficam ocultos.
+No início do `public/script.js`. Os campos vazios ficam ocultos.
 
 ```js
 const CONTATOS = {
@@ -27,24 +42,21 @@ const CONTATOS = {
 };
 ```
 
-## Rodar localmente
+## Publicar
 
-Abra o `index.html` no navegador ou, para simular o servidor:
-
-```bash
-python -m http.server 5500
-```
-
-e acesse http://localhost:5500.
-
-## Publicar no GitHub Pages
+### GitHub Pages
 
 1. No repositório, vá em **Settings → Pages**.
-2. Em **Source**, escolha **Deploy from a branch**.
-3. Selecione a branch `main`, pasta `/ (root)`, e clique em **Save**.
-4. Em 1 ou 2 minutos o site estará em https://kaueksilva.github.io/portfolio-walberto/.
+2. Em **Source**, escolha **GitHub Actions**.
+3. Pronto: o workflow `pages.yml` publica a pasta `public/` a cada push na `main`.
 
-Cada novo push na `main` atualiza o site automaticamente.
+O site fica em https://kaueksilva.github.io/portfolio-walberto/.
+
+### Hospedagem Node.js (Hostinger, Render, VPS)
+
+- Comando de inicialização: `npm start`
+- Porta: definida pela variável `PORT` (o servidor já lê)
+- Health check: `/healthz`
 
 ## Paleta
 

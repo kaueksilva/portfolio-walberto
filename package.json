@@ -1,0 +1,15 @@
+{
+  "name": "portfolio-walberto",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfólio de Walberto Ferreira de Souza — Dados, BI e Automação Microsoft.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
