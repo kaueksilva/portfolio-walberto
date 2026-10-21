@@ -1,0 +1,8 @@
+# Currículo original: fonte do conteúdo, não é usado pelo site
+Profile.pdf
+
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+*.log
